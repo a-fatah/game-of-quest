@@ -19,12 +19,14 @@ export default function App() {
 
   return (
     <div className="App">
-      <Container className="d-flex align-items-center justify-content-center">
+      <Container className="d-flex m-4 align-items-center justify-content-center">
         <img src={Owl} width={60} height={50} />
         <h3>Game Of Quest</h3>
       </Container>
-
-      <Quiz questions={state.questions} timeAllowed={60 * 1000} />
+      <Container className="d-flex">
+        <Quiz questions={state.questions} timeAllowed={60 * 1000} />
+      </Container>
+      
     </div>
   );
 }

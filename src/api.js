@@ -11,3 +11,15 @@ export async function getQuestions(category) {
     },
   }).then((res) => res.json());
 }
+
+export const CATEGORIES = [
+  'Computer',
+  'Software',
+  'Mathematics',
+  'Accounting',
+  'World',
+  'Sociology',
+  'Chemical',
+  'Education',
+  'Language',
+];

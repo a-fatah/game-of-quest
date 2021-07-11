@@ -11,7 +11,6 @@ export default function App() {
   const [state, setState] = useState({ timeAllowed: 30000, questions: [] });
   async function init() {
     const { questions } = await getQuestions(category);
-    debugger;
     setState((state) => ({ ...state, questions }));
   }
   useEffect(() => {

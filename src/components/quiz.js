@@ -1,28 +1,6 @@
-import { Field, Form, Formik, useField } from "formik";
-import { Container, Button, FormCheck } from "react-bootstrap";
-
-export function Question({ id, question, ...props }) {
-  const { question: text, options } = question;
-  const [field, meta, { setValue }] = useField(`question_${id}`);
-
-  return (
-    <Container className="my-3">
-      <strong>
-        {id}. {text}
-      </strong>
-      {options.map((option, index) => (
-        <FormCheck
-          key={index}
-          type="radio"
-          name={`question_${id}`}
-          id={`${id}_option_${index}`}
-          label={option.text}
-          onChange={() => setValue(option.text)}
-        />
-      ))}
-    </Container>
-  );
-}
+import { Field, Form, Formik } from "formik";
+import { Container, Button } from "react-bootstrap";
+import { Question } from './question';
 
 export function Quiz({ title, questions }) {
   const onSubmit = (answers) => {
@@ -39,7 +17,6 @@ export function Quiz({ title, questions }) {
 
     // correctOptions[question] will give us the correct option for 'question'
     const isCorrect = (question, answer) => {
-      debugger;
       const { text: correctAnswer } = correctOptions[question];
       return answer === correctAnswer;
     };

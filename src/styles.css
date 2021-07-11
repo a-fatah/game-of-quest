@@ -1,0 +1,11 @@
+.App {
+  font-family: sans-serif;
+}
+
+.quiz-header {
+  text-align: center;
+}
+.options {
+  display: flex;
+  flex-direction: column;
+}

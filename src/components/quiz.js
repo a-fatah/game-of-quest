@@ -37,7 +37,7 @@ export function Quiz({ title, questions }) {
       <h3>{title}</h3>
       <Formik initialValues={{}} onSubmit={onSubmit}>
         <Form>
-          <Container className="border">
+          <Container className="border p-3 shadow rounded">
             {questions.map((q, index) => (
               <Field
                 key={index + 1}

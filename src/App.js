@@ -20,8 +20,8 @@ export default function App() {
   return (
     <div className="App">
       <Container className="d-flex m-4 align-items-center justify-content-center">
-        <img src={Owl} width={60} height={50} />
-        <h3>Game Of Quest</h3>
+        <img src={Owl} width={70} height={60} />
+        <h3 className="display-6">Game Of Quest</h3>
       </Container>
       <Container className="d-flex">
         <Quiz questions={state.questions} timeAllowed={60 * 1000} />

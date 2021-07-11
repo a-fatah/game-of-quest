@@ -48,7 +48,7 @@ export function Quiz({ title, questions }) {
               />
             ))}
           </Container>
-          <Container className="m-2 d-flex justify-content-center">
+          <Container className="my-3 d-flex justify-content-center">
             <Button variant="primary" type="submit">
               Submit
             </Button>

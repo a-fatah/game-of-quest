@@ -1,21 +1,29 @@
+import React, { useEffect, useState, useRef } from "react";
+
 import "./styles.css";
-import { getQuestions } from "./api";
-import { useEffect, useState } from "react";
-import { Quiz } from "./components/quiz";
-import { ButtonGroup, Container, Dropdown, DropdownButton } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Owl from "./owl.jpeg";
+
+import { getQuestions } from "./api";
 import { CATEGORIES } from "./api";
+import Owl from "./owl.jpeg";
+
+import { Button, ButtonGroup, Container, Dropdown, DropdownButton } from "react-bootstrap";
+import Timer from "react-compound-timer/build";
+import Quiz from "./components/quiz";
 
 export default function App() {
   const [topic, setTopic] = useState("English");
   const [state, setState] = useState({ timeAllowed: 30000, questions: [] });
+  const [timeColor, setTimeColor] = useState("");
+  const [timeUp, setTimeUp] = useState(false);
+
+  const submitOnTimeRef = useRef();
 
   async function fetchQuestions() {
     try {
       const { questions } = await getQuestions(topic);
       setState((state) => ({ ...state, questions }));
-    } catch(e) {
+    } catch (e) {
       console.log('Could not get questions from API');
     }
   }
@@ -24,10 +32,17 @@ export default function App() {
     fetchQuestions();
   }, [topic]);
 
+  useEffect(() => {
+    if (timeUp) {
+      submitOnTimeRef.current.submitOnTimeHandler(state.questions);
+    }
+  }, [timeUp]);
+
   function onChangeTopic(topic) {
     setTopic(topic);
+    setTimeUp(false);
   }
-  
+
   return (
     <div className="App">
       <Container className="d-flex m-4 align-items-center justify-content-center">
@@ -35,19 +50,55 @@ export default function App() {
         <h3 className="display-6">Game Of Quest</h3>
       </Container>
       <Container>
-        <Container className="mx-2">
-          <DropdownButton as={ButtonGroup} title={topic} onSelect={onChangeTopic} id="topic-dropdown">
-            <Dropdown.Header>Select a topic</Dropdown.Header>
-            {
-              CATEGORIES.map((topic, index) => 
-                <Dropdown.Item key={index} eventKey={topic}>{topic}</Dropdown.Item> 
-              )
-            }
-          </DropdownButton>
+        <Container className="mx-3 d-flex">
+          <Container className="d-flex align-items-center justify-content-start">
+            <DropdownButton as={ButtonGroup} title={topic} onSelect={onChangeTopic} id="topic-dropdown">
+              <Dropdown.Header>Select a topic</Dropdown.Header>
+              {
+                CATEGORIES.map((topic, index) =>
+                  <Dropdown.Item key={index} eventKey={topic}>{topic}</Dropdown.Item>
+                )
+              }
+            </DropdownButton>
+          </Container>
+
+          <Container className="d-flex align-items-center justify-content-end">
+            <Timer
+              className=""
+              initialTime={5 * 1000}
+              lastUnit="m"
+              direction="backward"
+              startImmediately={false}
+              onStart={() => { setTimeUp(false); setTimeColor("green") }}
+              checkpoints={[
+                {
+                  time: 5 * 1000 - 2000,
+                  callback: () => setTimeColor("yellow"),
+                },
+                {
+                  time: 5 * 1000 - 3000,
+                  callback: () => setTimeColor("red"),
+                },
+                {
+                  time: 5 * 1000 - 5000,
+                  callback: () => setTimeUp(true),
+                }
+              ]}
+            >
+              {({ start }) => (
+                <React.Fragment>
+                  <span className="fs-3 mx-3" style={{ color: timeColor }}>
+                    <Timer.Minutes />:
+                    <Timer.Seconds />
+                  </span>
+                  <Button onClick={start}>Start</Button>
+                </React.Fragment>
+              )}
+            </Timer>
+          </Container>
         </Container>
-        <Quiz questions={state.questions} />
+        <Quiz title={topic} questions={state.questions} ref={submitOnTimeRef} />
       </Container>
-      
-    </div>
+    </div >
   );
 }

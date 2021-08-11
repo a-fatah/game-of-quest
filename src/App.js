@@ -18,7 +18,7 @@ export default function App() {
   const [timeUp, setTimeUp] = useState(false);
   const initialTime = 5 * 1000;
 
-  const submitOnTimeRef = useRef();
+  const quizRef = useRef();
 
   async function fetchQuestions() {
     try {
@@ -35,13 +35,13 @@ export default function App() {
 
   useEffect(() => {
     if (timeUp) {
-      submitOnTimeRef.current.submitOnTimeHandler(state.questions);
+      quizRef.current.submitOnTimeHandler(state.questions);
     }
   }, [timeUp]);
 
   function onChangeTopic(topic) {
     setTopic(topic);
-    submitOnTimeRef.current.resetForm();
+    quizRef.current.resetForm();
     setTimeUp(false);
   }
 
@@ -99,7 +99,7 @@ export default function App() {
             </Timer>
           </Container>
         </Container>
-        <Quiz title={topic} questions={state.questions} ref={submitOnTimeRef} />
+        <Quiz title={topic} questions={state.questions} ref={quizRef} />
       </Container>
     </div >
   );

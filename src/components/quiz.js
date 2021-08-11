@@ -55,12 +55,15 @@ function Quiz({ title, questions }, ref) {
   useImperativeHandle(ref, () => ({
     submitOnTimeHandler(questions) {
       onSubmit(questions);
+    },
+    resetForm() {
+      formRef.current.resetForm();
     }
   }), []);
 
   return (
     <Container className="m-2">
-      <h3 className="fs-3 d-flex justify-content-center">{title}</h3>
+      <h3 className="fs-3 d-flex justify-content-center">{title} Quiz</h3>
       <Formik
         initialValues={{}}
         onSubmit={() => onSubmit(questions)}

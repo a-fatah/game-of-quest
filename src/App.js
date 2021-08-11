@@ -16,6 +16,7 @@ export default function App() {
   const [state, setState] = useState({ timeAllowed: 30000, questions: [] });
   const [timeColor, setTimeColor] = useState("");
   const [timeUp, setTimeUp] = useState(false);
+  const initialTime = 5 * 1000;
 
   const submitOnTimeRef = useRef();
 
@@ -40,6 +41,7 @@ export default function App() {
 
   function onChangeTopic(topic) {
     setTopic(topic);
+    submitOnTimeRef.current.resetForm();
     setTimeUp(false);
   }
 
@@ -65,22 +67,22 @@ export default function App() {
           <Container className="d-flex align-items-center justify-content-end">
             <Timer
               className=""
-              initialTime={5 * 1000}
+              initialTime={initialTime}
               lastUnit="m"
               direction="backward"
               startImmediately={false}
               onStart={() => { setTimeUp(false); setTimeColor("green") }}
               checkpoints={[
                 {
-                  time: 5 * 1000 - 2000,
+                  time: initialTime - 2000,
                   callback: () => setTimeColor("yellow"),
                 },
                 {
-                  time: 5 * 1000 - 3000,
+                  time: initialTime - 3000,
                   callback: () => setTimeColor("red"),
                 },
                 {
-                  time: 5 * 1000 - 5000,
+                  time: initialTime - initialTime,
                   callback: () => setTimeUp(true),
                 }
               ]}

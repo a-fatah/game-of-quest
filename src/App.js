@@ -16,7 +16,7 @@ export default function App() {
   const [state, setState] = useState({ timeAllowed: 30000, questions: [] });
   const [timeColor, setTimeColor] = useState("");
   const [timeUp, setTimeUp] = useState(false);
-  const initialTime = 5 * 1000;
+  const initialTime = 15 * 1000;
 
   const quizRef = useRef();
 
@@ -43,6 +43,7 @@ export default function App() {
     setTopic(topic);
     quizRef.current.resetForm();
     setTimeUp(false);
+    //reset timer to initial value
   }
 
   return (
@@ -70,7 +71,7 @@ export default function App() {
               initialTime={initialTime}
               lastUnit="m"
               direction="backward"
-              startImmediately={false}
+              startImmediately={true}
               onStart={() => { setTimeUp(false); setTimeColor("green") }}
               checkpoints={[
                 {
@@ -87,13 +88,12 @@ export default function App() {
                 }
               ]}
             >
-              {({ start }) => (
+              {() => (
                 <React.Fragment>
                   <span className="fs-3 mx-3" style={{ color: timeColor }}>
                     <Timer.Minutes />:
                     <Timer.Seconds />
                   </span>
-                  <Button onClick={start}>Start</Button>
                 </React.Fragment>
               )}
             </Timer>
